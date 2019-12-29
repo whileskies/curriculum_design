@@ -20,7 +20,7 @@
 大二上学期19周（2018-2）
 
 #### 运行截图
-![](https://github.com/whileskies/curriculum_design/blob/master/img/cpp0.jpg)
+![image](img/cpp0.jpg)
 
 
 ----------
