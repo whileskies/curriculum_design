@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/pic">
+        <file alias="group">group.png</file>
+    </qresource>
+</RCC>
