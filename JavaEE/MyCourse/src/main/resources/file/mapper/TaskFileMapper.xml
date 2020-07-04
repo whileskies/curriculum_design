@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="file.mapper.TaskFileMapper">
+    <resultMap id="map" type="file.pojo.TaskFile">
+        <id property="id" column="id"/>
+        <result property="taskId" column="task_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+    </resultMap>
+    
+    <select id="selectByTaskIdStudentId" resultMap="map">
+        select id, task_id, user_id, upload_time, file_name, file_path
+        from task_file
+        where task_id = #{taskId} and user_id = #{studentId}
+    </select>
+
+    <select id="selectAllByTaskId" resultMap="map">
+        select id, task_id, user_id, upload_time, file_name, file_path
+        from task_file
+        where task_id = #{taskId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into task_file(task_id, user_id, upload_time, file_name, file_path)
+        values (#{taskId}, #{userId}, #{uploadTime}, #{fileName}, #{filePath})
+    </insert>
+
+    <update id="update">
+        update task_file
+        set task_id = #{taskId}, user_id = #{userId}, upload_time = #{uploadTime},
+        file_name = #{fileName}, file_path = #{filePath}
+        where id = #{id}
+    </update>
+    
+</mapper>
+

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="teacher.mapper.TeaCourseMapper">
+    <resultMap id="tCourseMap" type="teacher.pojo.TeaCourse">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="userRet" type="login.pojo.User">
+        <id property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+        <result property="name" column="name"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="school" column="school"/>
+        <result property="dept" column="dept"/>
+        <result property="major" column="major"/>
+        <result property="schoolClass" column="class"/>
+    </resultMap>
+
+    <select id="selectByTeacherId" resultMap="tCourseMap">
+        select id, code, name, create_time
+        from course inner join course_teacher c2 on course.id = c2.course_id
+        where c2.user_id = #{teacherId}
+        order by create_time desc
+    </select>
+
+    <select id="selectStudentCount" resultType="int">
+        select count(*)
+        from course inner join course_student cs on course.id = cs.course_id
+        where course_id = #{id}
+    </select>
+
+    <select id="selectByCode" resultMap="tCourseMap">
+        select id, code, name, create_time
+        from course
+        where code = #{code}
+    </select>
+
+    <select id="selectByCourseId" resultMap="tCourseMap">
+        select id, code, name, create_time
+        from course
+        where id = #{courseId}
+    </select>
+
+    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id">
+        insert into course(code, name, create_time)
+        values (#{code}, #{name}, #{createTime})
+    </insert>
+
+    <insert id="insertCourseTeacher">
+        insert into course_teacher(course_id, user_id) values (#{courseId}, #{teacherId})
+    </insert>
+
+    <select id="selectCourseStudent" resultMap="userRet">
+        select id, email, role, name, school_id, school, dept, major, class
+        from user inner join course_student cs on user.id = cs.user_id
+        where course_id = #{courseId};
+    </select>
+
+    <delete id="delete">
+        delete from course
+        where id = #{courseId}
+    </delete>
+</mapper>

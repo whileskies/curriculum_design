@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="student.mapper.StuCourseMapper">
+    <resultMap id="sCourseMap" type="student.pojo.StuCourse">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="enterTime" column="enter_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="userRet" type="login.pojo.User">
+        <id property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+        <result property="name" column="name"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="school" column="school"/>
+        <result property="dept" column="dept"/>
+        <result property="major" column="major"/>
+        <result property="schoolClass" column="class"/>
+    </resultMap>
+
+    <select id="selectByStudentId" resultMap="sCourseMap">
+        select id, code, name, create_time, enter_time
+        from course inner join course_student cs on course.id = cs.course_id
+        where cs.user_id = #{studentId}
+        order by enter_time desc
+    </select>
+
+    <select id="selectStudentCount" resultType="int">
+        select count(*)
+        from course inner join course_student cs on course.id = cs.course_id
+        where course_id = #{courseId}
+    </select>
+
+    <select id="selectByCode" resultMap="sCourseMap">
+        select id, code, name, create_time
+        from course
+        where code = #{code}
+    </select>
+
+    <select id="selectByCourseId" resultMap="sCourseMap">
+        select id, code, name, create_time
+        from course
+        where id = #{courseId}
+    </select>
+
+    <select id="selectTeacherByCourseId" resultMap="userRet">
+        select id, email, role, name, school_id, school, dept, major, class
+        from user inner join course_teacher c2 on user.id = c2.user_id
+        where course_id = #{courseId}
+    </select>
+
+    <insert id="insertCourseStudent">
+        insert into course_student(course_id, user_id, enter_time)
+        values (#{courseId}, #{studentId}, #{enterTime});
+    </insert>
+
+    <select id="selectEnterTimeByStudentId" resultType="java.util.Date">
+        select enter_time
+        from course_student
+        where course_id = #{courseId} and user_id = #{studentId}
+    </select>
+
+
+</mapper>

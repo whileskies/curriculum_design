@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/aop
+               http://www.springframework.org/schema/aop/spring-aop.xsd
+               http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context.xsd
+               http://www.springframework.org/schema/tx
+               http://www.springframework.org/schema/tx/spring-tx.xsd" >
+
+    <context:property-placeholder location="classpath:db.properties"/>
+    <context:component-scan base-package="login,teacher,student,file"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="teacher.mapper,login.mapper,student.mapper,file.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+    </bean>
+
+
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="ins*"/>
+            <tx:method name="del*"/>
+            <tx:method name="upd*"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="txPoint" expression="execution(* *.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
+    </aop:config>
+
+    <!--验证码 -->
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <prop key="kaptcha.border">no</prop>
+                        <prop key="kaptcha.textproducer.font.color">black</prop>
+                        <prop key="kaptcha.image.width">125</prop>
+                        <prop key="kaptcha.image.height">40</prop>
+                        <prop key="kaptcha.textproducer.font.size">35</prop>
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <prop key="kaptcha.noise.color">50,128,252</prop>
+                        <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.ShadowGimpy</prop>
+                        <prop key="kaptcha.background.clear.from">white</prop>
+                        <prop key="kaptcha.background.clear.to">white</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+<!--
+    <bean class="file.action.ResourceUploadAction" id="resourceUploadAction" scope="prototype"/>
+    <bean class="file.action.ZipTaskFileDownloadAction" id="zipTaskFileDownloadAction" scope="prototype"/>
+    <bean class="file.action.TaskFileDownloadAction" id="taskFileDownloadAction" scope="prototype"/>
+    <bean class="file.action.TaskFileUploadAction" id="taskFileUploadAction" scope="prototype"/>
+
+    <bean class="teacher.action.TeaCourseResourceAction" id="teaCourseResourceAction" scope="prototype"/>
+    <bean class="teacher.action.TeaCourseTaskAction" id="teaCourseTaskAction" scope="prototype"/>
+    <bean class="teacher.action.TeaCourseListAction" id="teaCourseListAction" scope="prototype"/>
+    <bean class="teacher.action.TeaCourseNoticeAction" id="teaCourseNoticeAction" scope="prototype"/>
+
+    <bean class="student.action.StuCourseTaskAction" id="stuCourseTaskAction" scope="prototype"/>
+    <bean class="student.action.StuCourseNoticeAction" id="stuCourseNoticeAction" scope="prototype"/>
+    <bean class="student.action.StuCourseListAction" id="stuCourseListAction" scope="prototype"/>
+
+    <bean class="login.action.LoginAction" id="loginAction" scope="prototype"/>
+    <bean class="login.action.RegisterAction" id="registerAction" scope="prototype"/>
+    <bean class="login.action.VerificationCodeAction" id="verificationCodeAction" scope="prototype"/>-->
+
+</beans>

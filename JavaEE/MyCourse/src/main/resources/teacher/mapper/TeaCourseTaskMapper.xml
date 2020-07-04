@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="teacher.mapper.TeaCourseTaskMapper">
+    <resultMap id="tTaskMap" type="teacher.pojo.TeaTask">
+        <id property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="deadline" column="deadline"/>
+        <result property="writerId" column="writer_id"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectAllByCourseId" resultMap="tTaskMap">
+        select id, course_id, title, content, deadline, writer_id, create_time, update_time
+        from task
+        where course_id = #{courseId}
+        order by update_time desc
+    </select>
+
+    <select id="selectByTaskId" resultMap="tTaskMap">
+        select id, course_id, title, content, deadline, writer_id, create_time, update_time
+        from task
+        where id = #{taskId}
+    </select>
+
+    <insert id="insertTask" useGeneratedKeys="true" keyProperty="id">
+        insert into task(course_id, title, content, deadline, writer_id, create_time, update_time)
+        values (#{courseId}, #{title}, #{content}, #{deadline}, #{writerId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="updateTask">
+        update task
+        set course_id = #{courseId}, title = #{title}, content = #{content}, deadline = #{deadline},
+        writer_id = #{writerId}, create_time = #{createTime}, update_time = #{updateTime}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTask">
+        delete
+        from task
+        where id = #{taskId}
+    </delete>
+
+</mapper>

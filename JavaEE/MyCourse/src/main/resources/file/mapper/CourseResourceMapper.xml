@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="file.mapper.CourseResourceMapper">
+    <resultMap id="map" type="file.pojo.CourseResource">
+        <id property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="map">
+        select id, course_id, file_name, file_path, upload_time
+        from resource
+        where id = #{id}
+    </select>
+
+    <select id="selectAllByCourseId" resultMap="map">
+        select id, course_id, file_name, file_path, upload_time
+        from resource
+        where course_id = #{courseId}
+        order by upload_time desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into resource(course_id, file_name, file_path, upload_time)
+        values (#{courseId}, #{fileName}, #{filePath}, #{uploadTime})
+    </insert>
+
+    <delete id="delete">
+        delete from resource
+        where id = #{resourceId}
+    </delete>
+
+</mapper>

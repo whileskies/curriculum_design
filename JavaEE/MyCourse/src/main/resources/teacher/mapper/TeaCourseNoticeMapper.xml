@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="teacher.mapper.TeaCourseNoticeMapper">
+    <resultMap id="tNoticeMap" type="teacher.pojo.TeaNotice">
+        <id property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="writerId" column="writer_id"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectAllByCourseId" resultMap="tNoticeMap">
+        select id,course_id, title, content, writer_id, create_time, update_time
+        from notice
+        where course_id = #{courseId}
+        order by update_time desc
+    </select>
+
+    <insert id="insertNotice">
+        insert into notice(course_id, title, content, writer_id, create_time, update_time)
+        values (#{courseId}, #{title}, #{content}, #{writerId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <delete id="deleteNotice">
+        delete
+        from notice
+        where id = #{noticeId}
+    </delete>
+</mapper>

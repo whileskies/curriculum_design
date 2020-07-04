@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="login.mapper.UserMapper">
+    <resultMap id="userRet" type="login.pojo.User">
+        <id property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+        <result property="name" column="name"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="school" column="school"/>
+        <result property="dept" column="dept"/>
+        <result property="major" column="major"/>
+        <result property="schoolClass" column="class"/>
+    </resultMap>
+
+    <select id="selectByEmailPassword" resultMap="userRet">
+        select id, email, role, name, school_id, school, dept, major, class
+          from user
+          where email=#{email} and password=#{password}
+    </select>
+
+    <select id="selectById" resultMap="userRet">
+        select id, email, role, name, school_id, school, dept, major, class
+          from user
+          where id = #{id}
+    </select>
+
+    <select id="selectByEmail" resultMap="userRet">
+        select id, email, role, name, school_id, school, dept, major, class
+          from user
+          where email = #{email}
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into user(id, email, password, role, name, school_id, school, dept, major, class)
+          values(#{id}, #{email}, #{password}, #{role}, #{name}, #{schoolId}, #{school}, #{dept},
+          #{major}, #{schoolClass})
+    </insert>
+
+</mapper>

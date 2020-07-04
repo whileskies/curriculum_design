@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+ <!--   <constant name="struts.objectFactory" value="spring"/>-->
+<!--    <constant name="struts.devMode" value="true"/>-->
+    <constant name="struts.multipart.maxSize" value="524288000"/>  <!--5000M  -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+
+
+    <package name="login" namespace="/" extends="struts-default">
+        <global-results>
+            <result name="login">/</result>
+            <result name="error">/404.html</result>
+        </global-results>
+
+        <action name="toLogin" class="login.action.LoginAction" method="toLogin">
+            <result>/</result>
+        </action>
+
+        <action name="verificationCode" class="login.action.VerificationCodeAction" method="execute"/>
+
+        <action name="login" class="login.action.LoginAction" method="login"/>
+
+        <action name="toRegister" class="login.action.RegisterAction" method="toRegister">
+            <result>/WEB-INF/login/register.jsp</result>
+        </action>
+
+        <action name="register" class="login.action.RegisterAction" method="register"/>
+
+        <action name="logout" class="login.action.LoginAction" method="logout">
+            <result type="redirectAction">
+                <param name="actionName">toLogin</param>
+            </result>
+        </action>
+    </package>
+
+    <package name="teacher" namespace="/teacher" extends="struts-default">
+        <global-results>
+            <result name="login">/</result>
+            <result name="error">/404.html</result>
+        </global-results>
+
+        <action name="showCourseList" class="teacher.action.TeaCourseListAction" method="showCourseList">
+            <result>/WEB-INF/teacher/courselist.jsp</result>
+
+        </action>
+
+        <action name="createCourse" class="teacher.action.TeaCourseListAction" method="createCourse"/>
+
+        <action name="deleteCourse" class="teacher.action.TeaCourseListAction" method="deleteCourse">
+            <result type="redirectAction">
+                <param name="actionName">showCourseList</param>
+            </result>
+        </action>
+
+        <action name="notice" class="teacher.action.TeaCourseNoticeAction" method="getNotice">
+            <result>/WEB-INF/teacher/course_notice.jsp</result>
+        </action>
+
+        <action name="addNotice" class="teacher.action.TeaCourseNoticeAction" method="addNotice">
+            <result type="redirectAction">
+                <param name="actionName">notice</param>
+                <param name="courseId">${courseId}</param>
+            </result>
+        </action>
+
+        <action name="deleteNotice" class="teacher.action.TeaCourseNoticeAction" method="deleteNotice">
+            <result type="redirectAction">
+                <param name="actionName">notice</param>
+                <param name="courseId">${courseId}</param>
+            </result>
+        </action>
+
+        <action name="task" class="teacher.action.TeaCourseTaskAction" method="getTasks">
+            <result>/WEB-INF/teacher/course_task.jsp</result>
+        </action>
+
+        <action name="addTask" class="teacher.action.TeaCourseTaskAction" method="addTask">
+            <result type="redirectAction">
+                <param name="actionName">task</param>
+                <param name="courseId">${courseId}</param>
+            </result>
+        </action>
+
+        <action name="deleteTask" class="teacher.action.TeaCourseTaskAction" method="deleteTask">
+            <result type="redirectAction">
+                <param name="actionName">task</param>
+                <param name="courseId">${courseId}</param>
+            </result>
+        </action>
+
+        <action name="toUpdate" class="teacher.action.TeaCourseTaskAction" method="toUpdate">
+            <result>/WEB-INF/teacher/course_task_update.jsp</result>
+        </action>
+
+        <action name="updateTask" class="teacher.action.TeaCourseTaskAction" method="updateTask">
+            <result type="redirectAction">
+                <param name="actionName">task</param>
+                <param name="courseId">${courseId}</param>
+            </result>
+        </action>
+
+        <action name="taskDetail" class="teacher.action.TeaCourseTaskAction" method="taskDetail">
+            <result>/WEB-INF/teacher/course_task_detail.jsp</result>
+        </action>
+
+        <action name="resource" class="teacher.action.TeaCourseResourceAction" method="getResource">
+            <result>/WEB-INF/teacher/course_resource.jsp</result>
+        </action>
+
+        <action name="deleteResource" class="teacher.action.ResourceDeleteAction" method="delete">
+            <result type="redirectAction">
+                <param name="actionName">resource</param>
+                <param name="courseId">${courseId}</param>
+            </result>
+        </action>
+
+        <action name="student" class="teacher.action.TeaCourseStudentAction" method="findStudents">
+            <result>/WEB-INF/teacher/course_student.jsp</result>
+        </action>
+
+        <action name="toAddTest" class="teacher.action.TeaCourseTestAction" method="toAddTest">
+            <result>/WEB-INF/teacher/add_test.jsp</result>
+        </action>
+
+    </package>
+
+
+
+    <package name="student" namespace="/student" extends="struts-default">
+        <global-results>
+            <result name="login">/</result>
+            <result name="error">/404.html</result>
+        </global-results>
+
+        <action name="showCourseList" class="student.action.StuCourseListAction" method="showCourseList">
+            <result>/WEB-INF/student/courselist.jsp</result>
+        </action>
+
+        <action name="enterCourse" class="student.action.StuCourseListAction" method="enterCourse"/>
+
+        <action name="notice" class="student.action.StuCourseNoticeAction" method="getNotice">
+            <result>/WEB-INF/student/course_notice.jsp</result>
+        </action>
+
+        <action name="task" class="student.action.StuCourseTaskAction" method="getTasks">
+            <result>/WEB-INF/student/course_task.jsp</result>
+        </action>
+
+        <action name="taskDetail" class="student.action.StuCourseTaskAction" method="taskDetail">
+            <result>/WEB-INF/student/course_task_detail.jsp</result>
+        </action>
+
+        <action name="resource" class="student.action.StuCourseResourceAction" method="getResource">
+            <result>/WEB-INF/student/course_resource.jsp</result>
+        </action>
+    </package>
+
+
+    <package name="file" namespace="/file" extends="struts-default">
+        <global-results>
+            <result name="login">/</result>
+            <result name="error">/404.html</result>
+        </global-results>
+
+        <action name="taskFileUpload" class="file.action.TaskFileUploadAction" method="upload">
+            <interceptor-ref name="defaultStack">
+                <param name="fileUpload.maximumSize">52428800</param>
+            </interceptor-ref>
+        </action>
+
+        <action name="taskFileDownload" class="file.action.TaskFileDownloadAction" method="download">
+            <result type="stream">
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentLength">${contentLength}</param>
+                <param name="contentCharSet">utf-8</param>
+            </result>
+        </action>
+
+        <action name="teaTaskFileDownload" class="file.action.TaskFileDownloadAction" method="teacherDownload">
+            <result type="stream">
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentLength">${contentLength}</param>
+                <param name="contentCharSet">utf-8</param>
+            </result>
+        </action>
+
+
+        <action name="taskZipFileDownload" class="file.action.ZipTaskFileDownloadAction" method="downloadZip">
+            <result type="stream">
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentLength">${contentLength}</param>
+            </result>
+        </action>
+
+        <action name="uploadResource" class="file.action.ResourceUploadAction" method="uploadFiles">
+            <interceptor-ref name="defaultStack">
+                <param name="fileUpload.maximumSize">524288000</param>  <!--500M  -->
+            </interceptor-ref>
+        </action>
+
+        <action name="downloadResource" class="file.action.ResourceDownloadAction" method="download">
+            <result type="stream">
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentLength">${contentLength}</param>
+            </result>
+        </action>
+
+    </package>
+
+</struts>
