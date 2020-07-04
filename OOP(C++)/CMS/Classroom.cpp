@@ -1,11 +1,10 @@
 
 #include "stdafx.h"
 
-//¿ÎÊ±Ê±¼äÀà
+//è¯¾æ—¶æ—¶é—´ç±»
 ostream& operator<< (ostream &out, const classTime &rhs)
 {
-	//out << "(" << rhs.classWeek << " " << rhs.week << " " << rhs.section << ")";
-	out << "µÚ" << rhs.classWeek << "ÖÜÖÜ" << rhs.week << "µÚ" << rhs.section << "´ó½Ú";
+	out << "(" << rhs.classWeek << " " << rhs.week << " " << rhs.section << ")";// shuchu è¾“å‡º
 	return out;
 }
 
@@ -18,7 +17,7 @@ bool operator== (const classTime &lhs, const classTime &rhs)
 
 bool operator!= (const classTime &lhs, const classTime &rhs) { return !(lhs == rhs); }
 
-//Ô¤Ô¼ĞÅÏ¢Àà
+//é¢„çº¦ä¿¡æ¯ç±»
 ostream& operator<< (ostream &out, const OrderInfo &rhs)
 {
 	out << " ";
@@ -35,7 +34,7 @@ string OrderInfo::getName() const{ return m_name; }
 string OrderInfo::getPhoneNum() const { return m_phoneNum;  }
 
 
-//µ±Ç°½ÌÊÒÉÏ¿ÎĞÅÏ¢Àà
+//å½“å‰æ•™å®¤ä¸Šè¯¾ä¿¡æ¯ç±»
 ostream& operator<< (ostream &out, const ClassInfo &rhs)
 {
 	out << " ";
