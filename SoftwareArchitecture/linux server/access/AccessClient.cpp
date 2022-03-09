@@ -22,9 +22,9 @@ namespace access {
         int keepCount = 3; // 探测尝试的次数.如果第1次探测包就收到响应了,则后2次的不再发.
 
         setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, (void *)&keepAlive, sizeof(keepAlive));
-        setsockopt(sockfd, SOL_TCP, TCP_KEEPIDLE, (void*)&keepIdle, sizeof(keepIdle));
-        setsockopt(sockfd, SOL_TCP, TCP_KEEPINTVL, (void *)&keepInterval, sizeof(keepInterval));
-        setsockopt(sockfd, SOL_TCP, TCP_KEEPCNT, (void *)&keepCount, sizeof(keepCount));
+        // setsockopt(sockfd, SOL_TCP, TCP_KEEPIDLE, (void*)&keepIdle, sizeof(keepIdle));
+        // setsockopt(sockfd, SOL_TCP, TCP_KEEPINTVL, (void *)&keepInterval, sizeof(keepInterval));
+        // setsockopt(sockfd, SOL_TCP, TCP_KEEPCNT, (void *)&keepCount, sizeof(keepCount));
 
         evconnlistener_set_error_cb(listener_, accept_error_cb);
 
@@ -139,8 +139,8 @@ namespace access {
     void AccessClient::event_cb(struct bufferevent *bev, short events, void *ctx) {
         //获取this对象
         auto *this_access_client = (AccessClient *) ctx;
-        ClientAccessInfo *client_access_info = this_access_client->clients_map_by_sockfd[fd];
         int fd = bufferevent_getfd(bev);
+        ClientAccessInfo *client_access_info = this_access_client->clients_map_by_sockfd[fd];
 
         if (events & BEV_EVENT_ERROR) {
             int err = EVUTIL_SOCKET_ERROR();
